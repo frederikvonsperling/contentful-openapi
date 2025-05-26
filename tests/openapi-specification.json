@@ -1,0 +1,446 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Contentful API",
+    "description": "API for accessing Contentful content types and entries",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://cdn.contentful.com/spaces/{spaceId}/environments/{environmentId}",
+      "description": "Contentful Content Delivery API",
+      "variables": {
+        "spaceId": {
+          "default": "vzubkka9ya4l",
+          "description": "The ID of your Contentful space"
+        },
+        "environmentId": {
+          "default": "master",
+          "description": "The environment ID (default is master)"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/content_types": {
+      "get": {
+        "summary": "Get all content types",
+        "description": "Returns a list of all content types in the space",
+        "operationId": "getContentTypes",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sys": {
+                      "$ref": "#/components/schemas/SystemMetadata"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "skip": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ContentType"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content_types/{contentTypeId}": {
+      "get": {
+        "summary": "Get a specific content type",
+        "description": "Returns a specific content type by ID",
+        "operationId": "getContentTypeById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "contentTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "button",
+            "description": "The ID of the content type to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentType"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Content type not found"
+          }
+        }
+      }
+    },
+    "/entries": {
+      "get": {
+        "summary": "Get entries",
+        "description": "Returns entries, optionally filtered by content type",
+        "operationId": "getEntries",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "content_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "button",
+            "description": "Filter entries by content type"
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "en-US",
+            "description": "Locale to return content in"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sys": {
+                      "$ref": "#/components/schemas/SystemMetadata"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "skip": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Entry"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Authorization": {
+        "name": "Authorization",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Access token with the format 'Bearer {token}'"
+      }
+    },
+    "schemas": {
+      "SystemMetadata": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "space": {
+            "type": "object",
+            "properties": {
+              "sys": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "Link"
+                  },
+                  "linkType": {
+                    "type": "string",
+                    "example": "Space"
+                  },
+                  "id": {
+                    "type": "string",
+                    "example": "vzubkka9ya4l"
+                  }
+                }
+              }
+            }
+          },
+          "environment": {
+            "type": "object",
+            "properties": {
+              "sys": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "Link"
+                  },
+                  "linkType": {
+                    "type": "string",
+                    "example": "Environment"
+                  },
+                  "id": {
+                    "type": "string",
+                    "example": "master"
+                  }
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ContentType": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "$ref": "#/components/schemas/SystemMetadata"
+          },
+          "displayField": {
+            "type": "string",
+            "example": "internalName"
+          },
+          "name": {
+            "type": "string",
+            "example": "🧩 Button"
+          },
+          "description": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentTypeField"
+            }
+          }
+        }
+      },
+      "ContentTypeField": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "internalName"
+          },
+          "name": {
+            "type": "string",
+            "example": "Internal Name"
+          },
+          "type": {
+            "type": "string",
+            "example": "Symbol",
+            "description": "Field type (Symbol, Text, Integer, Number, Date, Boolean, Link, Array, etc.)"
+          },
+          "localized": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "validations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "omitted": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Entry": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "type": "object",
+            "properties": {
+              "space": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "example": "Entry"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "environment": {
+                "$ref": "#/components/schemas/Link"
+              },
+              "publishedVersion": {
+                "type": "integer"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "firstPublishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "contentType": {
+                "$ref": "#/components/schemas/Link"
+              }
+            }
+          },
+          "fields": {
+            "type": "object",
+            "description": "Dynamic fields based on content type",
+            "example": {
+              "internalName": "Homepage CTA",
+              "label": "Get Started"
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "Link": {
+    "type": "object",
+    "properties": {
+      "sys": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "Link"
+          },
+          "linkType": {
+            "type": "string",
+            "enum": ["Space", "Environment", "Entry", "Asset", "ContentType", "User"]
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "Locale": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "example": "English (United States)"
+      },
+      "code": {
+        "type": "string",
+        "example": "en-US"
+      },
+      "fallbackCode": {
+        "type": "string",
+        "nullable": true
+      },
+      "default": {
+        "type": "boolean"
+      },
+      "contentManagementApi": {
+        "type": "boolean"
+      },
+      "contentDeliveryApi": {
+        "type": "boolean"
+      },
+      "optional": {
+        "type": "boolean"
+      },
+      "sys": {
+        "$ref": "#/components/schemas/SystemMetadata"
+      }
+    }
+  },
+  "securitySchemes": {
+    "contentfulDeliveryToken": {
+      "type": "http",
+      "scheme": "bearer",
+      "description": "Contentful Content Delivery API Token"
+    }
+  },
+  "security": [
+    {
+      "contentfulDeliveryToken": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Content Types",
+      "description": "Operations related to content types"
+    },
+    {
+      "name": "Entries",
+      "description": "Operations related to entries"
+    },
+    {
+      "name": "Locales",
+      "description": "Operations related to locales"
+    }
+  ]
+}

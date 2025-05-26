@@ -1,0 +1,18 @@
+{
+  "contentFile": "contentful-export.json",
+  "contentOnly": false,
+  "deliveryToken": "$CONTENTFUL_DELIVERY_API_TOKEN",
+  "environmentId": "master",
+  "exportDir": "./",
+  "includeArchived": false,
+  "includeDrafts": false,
+  "managementToken": "$CONTENTFUL_MANAGEMENT_API_TOKEN",
+  "saveFile": true,
+  "skipContent": true,
+  "skipContentModel": false,
+  "skipEditorInterfaces": true,
+  "skipRoles": true,
+  "skipTags": true,
+  "skipWebhooks": true,
+  "spaceId": "vzubkka9ya4l"
+}
