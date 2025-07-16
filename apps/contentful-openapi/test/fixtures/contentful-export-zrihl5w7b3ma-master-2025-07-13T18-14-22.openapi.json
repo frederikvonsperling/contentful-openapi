@@ -1,0 +1,668 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Contentful Space API",
+    "description": "API for Contentful spaces with Article content type",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Contentful",
+      "url": "https://www.contentful.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://cdn.contentful.com",
+      "description": "Contentful Content Delivery API"
+    },
+    {
+      "url": "https://preview.contentful.com",
+      "description": "Contentful Content Preview API"
+    }
+  ],
+  "security": [
+    {
+      "accessToken": []
+    }
+  ],
+  "paths": {
+    "/spaces/{spaceId}/environments/{environmentId}/entries": {
+      "get": {
+        "summary": "Get all entries",
+        "description": "Retrieve all entries from the space",
+        "operationId": "getEntries",
+        "parameters": [
+          {
+            "name": "spaceId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Contentful space",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zrihl5w7b3ma"
+          },
+          {
+            "name": "environmentId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the environment",
+            "schema": {
+              "type": "string"
+            },
+            "example": "master"
+          },
+          {
+            "name": "content_type",
+            "in": "query",
+            "description": "Filter entries by content type",
+            "schema": {
+              "type": "string",
+              "enum": ["article"]
+            }
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "description": "Specify the locale",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of results",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "Number of entries to skip",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved entries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntryCollection"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{spaceId}/environments/{environmentId}/entries/{entryId}": {
+      "get": {
+        "summary": "Get a specific entry",
+        "description": "Retrieve a specific entry by ID",
+        "operationId": "getEntry",
+        "parameters": [
+          {
+            "name": "spaceId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Contentful space",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zrihl5w7b3ma"
+          },
+          {
+            "name": "environmentId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the environment",
+            "schema": {
+              "type": "string"
+            },
+            "example": "master"
+          },
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the entry to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "description": "Specify the locale",
+            "schema": {
+              "type": "string",
+              "default": "en-US"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleEntry"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{spaceId}/environments/{environmentId}/content_types": {
+      "get": {
+        "summary": "Get all content types",
+        "description": "Retrieve all content types from the space",
+        "operationId": "getContentTypes",
+        "parameters": [
+          {
+            "name": "spaceId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Contentful space",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zrihl5w7b3ma"
+          },
+          {
+            "name": "environmentId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the environment",
+            "schema": {
+              "type": "string"
+            },
+            "example": "master"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved content types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentTypeCollection"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{spaceId}/environments/{environmentId}/content_types/{contentTypeId}": {
+      "get": {
+        "summary": "Get specific content type",
+        "description": "Retrieve a specific content type definition",
+        "operationId": "getContentType",
+        "parameters": [
+          {
+            "name": "spaceId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Contentful space",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zrihl5w7b3ma"
+          },
+          {
+            "name": "environmentId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the environment",
+            "schema": {
+              "type": "string"
+            },
+            "example": "master"
+          },
+          {
+            "name": "contentTypeId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the content type",
+            "schema": {
+              "type": "string"
+            },
+            "example": "article"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved content type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentType"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{spaceId}/environments/{environmentId}/locales": {
+      "get": {
+        "summary": "Get all locales",
+        "description": "Retrieve all locales from the space",
+        "operationId": "getLocales",
+        "parameters": [
+          {
+            "name": "spaceId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Contentful space",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zrihl5w7b3ma"
+          },
+          {
+            "name": "environmentId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the environment",
+            "schema": {
+              "type": "string"
+            },
+            "example": "master"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved locales",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocaleCollection"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "accessToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Bearer token for Contentful API access"
+      }
+    },
+    "schemas": {
+      "Sys": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "space": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "environment": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "contentType": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "Link"
+              },
+              "linkType": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "ArticleEntry": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sys"
+              },
+              {
+                "properties": {
+                  "type": {
+                    "const": "Entry"
+                  },
+                  "contentType": {
+                    "properties": {
+                      "sys": {
+                        "properties": {
+                          "id": {
+                            "const": "article"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "fields": {
+            "type": "object",
+            "properties": {
+              "internalName": {
+                "type": "string",
+                "description": "Internal Name - unique identifier for the article"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "en-US": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "description": "Title of the article (localized)"
+              },
+              "excerpt": {
+                "type": ["string", "null"],
+                "description": "Article excerpt"
+              }
+            },
+            "required": ["internalName", "title"]
+          }
+        }
+      },
+      "EntryCollection": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "Array"
+              }
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "skip": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleEntry"
+            }
+          }
+        }
+      },
+      "ContentType": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sys"
+              },
+              {
+                "properties": {
+                  "type": {
+                    "const": "ContentType"
+                  }
+                }
+              }
+            ]
+          },
+          "displayField": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            }
+          }
+        }
+      },
+      "Field": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "Symbol",
+              "Text",
+              "Integer",
+              "Number",
+              "Date",
+              "Boolean",
+              "Object",
+              "Array",
+              "Link",
+              "RichText"
+            ]
+          },
+          "localized": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "validations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "omitted": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ContentTypeCollection": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "Array"
+              }
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "skip": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentType"
+            }
+          }
+        }
+      },
+      "Locale": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "fallbackCode": {
+            "type": ["string", "null"]
+          },
+          "default": {
+            "type": "boolean"
+          },
+          "contentManagementApi": {
+            "type": "boolean"
+          },
+          "contentDeliveryApi": {
+            "type": "boolean"
+          },
+          "optional": {
+            "type": "boolean"
+          },
+          "sys": {
+            "$ref": "#/components/schemas/Sys"
+          }
+        }
+      },
+      "LocaleCollection": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "Array"
+              }
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "skip": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Locale"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "sys": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "Error"
+              },
+              "id": {
+                "type": "string"
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,23 +1,42 @@
 {
-  "name": "@repo/contentful-openapi",
+  "name": "contentful-openapi",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsup src/index.ts",
-    "build:watch": "tsup src/index.ts --watch",
-    "test": "vitest"
-  },
+  "main": "./dist/index.cjs",
   "keywords": [],
   "author": "",
+  "type": "module",
   "license": "ISC",
   "description": "",
+  "scripts": {
+    "build": "zshy",
+    "test": "vitest"
+  },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
+    "@types/yargs-parser": "^21.0.3",
     "eslint": "^9.30.0",
-    "tsup": "^8.5.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
-  }
+    "vitest": "^3.2.4",
+    "yargs-parser": "^22.0.0",
+    "zshy": "^0.2.3"
+  },
+  "zshy": {
+    "exports": "./src/index.ts",
+    "bin": "./src/cli.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.cts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "bin": "./dist/cli.cjs"
 }

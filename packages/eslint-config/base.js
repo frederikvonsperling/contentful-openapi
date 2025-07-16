@@ -13,6 +13,7 @@ export const config = [
   js.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
+  ...tseslint.configs.stylisticTypeChecked,
   {
     plugins: {
       turbo: turboPlugin,

@@ -1,0 +1,25 @@
+{
+  "name": "example-openapi-fetch",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "codegen": "bash scripts/generate-types.sh",
+    "generate": "contentful-openapi --space_id=zrihl5w7b3ma --access_token="
+  },
+  "devDependencies": {
+    "contentful-openapi": "workspace:*",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "contentful": "^11.7.7",
+    "openapi-fetch": "^0.14.0",
+    "openapi-typescript": "^7.8.0"
+  }
+}
